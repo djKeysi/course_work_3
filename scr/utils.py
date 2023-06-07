@@ -1,5 +1,10 @@
 import json
 from datetime import datetime
+from scr.test import check_on_score
+
+
+
+
 from collections import defaultdict
 import time
 FILE_JSON = "../operations.json"
@@ -25,11 +30,7 @@ def conversion_date(date):
     return date_new
 
 
-def get_hidden_card(card):
-    return f"{card.replace(' ', '')[4:]}"
 
-
-print(get_hidden_card('2842878893689012'))#2842 87** **** 9012
 
 with open(FILE_JSON, 'r', encoding='utf-8') as file:
     json_file = json.load(file)
@@ -50,10 +51,10 @@ with open(FILE_JSON, 'r', encoding='utf-8') as file:
             # print(sum_operation)
             try:
                 transfer_from =i['from']
-                print(f"{data} {description_translate}\n{transfer_from} -> {transfer_to} \n{sum_operation} {currency_operation}")
+                print(f"{data} {description_translate}\n{check_on_score(transfer_from)} -> {check_on_score(transfer_to)} \n{sum_operation} {currency_operation}")
                 print()
             except KeyError:
-                print(f"{data} {description_translate}\n{transfer_to} \n{sum_operation} {currency_operation}")
+                print(f"{data} {description_translate}\n{check_on_score(transfer_to)} \n{sum_operation} {currency_operation}")
                 print()
 
         # try:
