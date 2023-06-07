@@ -16,7 +16,7 @@ FILE_JSON = "../operations.json"
 #
 # open_json()
 def conversion_date(date):
-    """dfdfdfdfdfddfsdfdfdfdf"""
+    """Функция перевода даты (2019-01-05T00:52:30.108534) из файла .json в нормальный вид (8.12.2019)"""
     date_operaton = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f')
     day = date_operaton.date().day
     month=date_operaton.date().month
@@ -24,19 +24,37 @@ def conversion_date(date):
     date_new = f"{day}.{month}.{year}"
     return date_new
 
-with open(FILE_JSON, 'r', encoding='utf-8') as file:
-    json_object = json.load(file)
-    data = [trans for trans in json_object if trans]
-    g = sorted(data, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%dT%H:%M:%S.%f'),reverse=True)
-    data2 = [trans for trans in g if trans]
-    for i in data2[:6]:
-        if i['state'] == 'EXECUTED':
 
-            print(conversion_date(i['date']))
-            # try:
-            #     print(f"{i['date']} {i['description']}\n {i['to']} \n {i['from']} {i['operationAmount']['amount']} {i['operationAmount']['currency']['name']}")
-            # except KeyError:
-            #     print(f"{i['date']} {i['description']}\n {i['to']} \n  {i['operationAmount']['amount']} {i['operationAmount']['currency']['name']}")
+def get_hidden_card(card):
+    return f"{card.replace(' ', '')[4:]}"
+
+
+print(get_hidden_card('2842878893689012'))#2842 87** **** 9012
+
+with open(FILE_JSON, 'r', encoding='utf-8') as file:
+    json_file = json.load(file)
+    null_dict = [trans for trans in json_file if trans]
+    sort_json_file = sorted(null_dict, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%dT%H:%M:%S.%f'),reverse=True)
+
+    for i in sort_json_file[:6]:
+
+        status_translate= i['state']
+        data = conversion_date(i['date'])
+        description_translate = i['description']
+        transfer_to = i['to']
+        sum_operation = i['operationAmount']['amount']
+        currency_operation = i['operationAmount']['currency']['name']
+
+        if status_translate == 'EXECUTED':
+
+            # print(sum_operation)
+            try:
+                transfer_from =i['from']
+                print(f"{data} {description_translate}\n{transfer_from} -> {transfer_to} \n{sum_operation} {currency_operation}")
+                print()
+            except KeyError:
+                print(f"{data} {description_translate}\n{transfer_to} \n{sum_operation} {currency_operation}")
+                print()
 
         # try:
         #     print(i['from'])
