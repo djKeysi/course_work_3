@@ -1,4 +1,4 @@
-import datetime
+
 def get_is_digit(words):
     """"Вытаскиваем из строки цифры перебором"""
     number = ""
@@ -20,7 +20,7 @@ def check_on_score(word):
     if word[:4] == "Счет":
         return word[:4]+ " " + get_hidden_score(get_is_digit(word))
     else:
-        return ''.join(w for w in word if w.isalpha() or w == ' ')+ get_hidden_card(get_is_digit(word))
+        return ''.join(w for w in word if w.isalpha() or w == ' ') + get_hidden_card(get_is_digit(word))
 
 
 
